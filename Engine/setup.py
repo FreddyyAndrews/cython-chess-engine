@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='chess_engine',
+    name='Engine',
     version='0.1',
     description='A brute force python chess engine.', 
     author='Frederick Andrews',  # Optional
