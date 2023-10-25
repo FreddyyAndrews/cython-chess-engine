@@ -13,7 +13,7 @@ class PrecomputedMoveData:
                 numEast = 7 - file
                 squareIndex = rank * 8 + file
                 moveData = [
-                    numNorth, numSouth, numEast, numWest, 
+                    numNorth, numSouth, numEast, numWest,
                     min(numNorth, numWest), min(numSouth, numEast),
                     min(numNorth, numEast), min(numSouth, numWest)
                 ]
