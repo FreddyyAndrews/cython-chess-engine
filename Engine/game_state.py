@@ -1,4 +1,4 @@
-from Engine.piece import Piece
+from piece import Piece
 from typing import List
 
 

@@ -1,7 +1,7 @@
-from Engine.piece import Piece
-from Engine.game_state import GameState
-from Engine.move import Move
-from Engine.precomputed_move_data import PrecomputedMoveData
+from piece import Piece
+from game_state import GameState
+from move import Move
+from precomputed_move_data import PrecomputedMoveData
 
 
 class MoveGenerator:
