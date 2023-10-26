@@ -17,7 +17,7 @@ class Piece:
 
     @staticmethod
     def are_same_colour(piece1: int, piece2: int) -> bool:
-        return piece1 < 7 == piece2 < 7
+        return (piece1 < 7) == (piece2 < 7)
 
     @staticmethod
     def is_sliding_piece(piece: int):
@@ -36,3 +36,7 @@ class Piece:
             piece -= 8
 
         return piece == piece_type
+
+    @staticmethod
+    def get_promotion_pieces() -> list[int]:
+        return [Piece.knight, Piece.bishop, Piece.rook, Piece.queen]

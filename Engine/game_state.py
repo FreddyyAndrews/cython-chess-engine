@@ -88,7 +88,7 @@ class GameState:
             file_map = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
 
             self.en_passant = file_map[fen_split[3][0]] + (int(fen_split[3][1]) - 1) * 8
-     
+
         self.half_move_clock = int(fen_split[4])
         self.full_move_clock = int(fen_split[5])
 

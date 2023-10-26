@@ -1,4 +1,8 @@
-from Engine.game_state import GameState
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../Engine'))
+
+from game_state import GameState
 
 
 def test_set_board_from_fen_string():
