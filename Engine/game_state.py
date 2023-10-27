@@ -8,9 +8,9 @@ class GameState:
     en_passant: int = None
     turn_to_move: str = None
     wq_castle: bool = None
-    wk_Castle: bool = None
-    bk_Castle: bool = None
-    bq_Castle: bool = None
+    wk_castle: bool = None
+    bk_castle: bool = None
+    bq_castle: bool = None
     half_move_clock: int = None
     full_move_clock: int = None
 
@@ -19,17 +19,17 @@ class GameState:
         if self.board_representation[0] != Piece.white + Piece.rook:
             self.wq_castle = False
         if self.board_representation[7] != Piece.white + Piece.rook:
-            self.wk_Castle = False
+            self.wk_castle = False
         if self.board_representation[4] != Piece.white + Piece.king:
             self.wq_castle = False
-            self.wk_Castle = False
+            self.wk_castle = False
         if self.board_representation[56] != Piece.black + Piece.rook:
-            self.bq_Castle = False
+            self.bq_castle = False
         if self.board_representation[63] != Piece.black + Piece.rook:
-            self.bk_Castle = False
+            self.bk_castle = False
         if self.board_representation[60] != Piece.black + Piece.king:
-            self.bq_Castle = False
-            self.bk_Castle = False
+            self.bq_castle = False
+            self.bk_castle = False
 
     def set_board_from_fen_string(self, fen: str) -> None:
         # set char representation of numerical pieces
@@ -60,25 +60,25 @@ class GameState:
 
         # Default castling availability to false
         self.wq_castle = False
-        self.wk_Castle = False
-        self.bq_Castle = False
-        self.bk_Castle = False
+        self.wk_castle = False
+        self.bq_castle = False
+        self.bk_castle = False
 
         # Determine if castling is set to true in fen string
 
         for i in range(len(fen_split[2])):
 
             if fen_split[2][i] == "K":
-                self.wk_Castle = True
+                self.wk_castle = True
 
             if fen_split[2][i] == "k":
-                self.bk_Castle = True
+                self.bk_castle = True
 
             if fen_split[2][i] == "Q":
-                self.wq_Castle = True
+                self.wq_castle = True
 
             if fen_split[2][i] == "q":
-                self.bq_Castle = True
+                self.bq_castle = True
 
         self.check_castling_availability()
 
@@ -129,16 +129,16 @@ class GameState:
 
         castle_dash_flag = True
 
-        if self.wk_Castle:
+        if self.wk_castle:
             fen += "K"
             castle_dash_flag = False
-        if self.wq_Castle:
+        if self.wq_castle:
             fen += "Q"
             castle_dash_flag = False
-        if self.bk_Castle:
+        if self.bk_castle:
             fen += "k"
             castle_dash_flag = False
-        if self.bq_Castle:
+        if self.bq_castle:
             fen += "q"
             castle_dash_flag = False
         if castle_dash_flag:
@@ -156,8 +156,18 @@ class GameState:
 
         return fen
 
-    def __init__(self, fen: str):
+    def __init__(self, fen: str = ""):
+        self.board_representation = [0] * 64
+        self.en_passant = None
+        self.turn_to_move = None
+        self.wq_castle = None
+        self.wk_castle = None
+        self.bk_castle = None
+        self.bq_castle = None
+        self.half_move_clock = None
+        self.full_move_clock = None
 
-        if not len(fen) == 0:
+        if fen:
             self.set_board_from_fen_string(fen)
-        self.set_board_from_fen_string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+        else:
+            self.set_board_from_fen_string("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")

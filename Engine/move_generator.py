@@ -63,9 +63,20 @@ class MoveGenerator:
 
         # Capture moves (both left and right)
         for capture_offset in [7, 9]:
-            capture_move = start_square + capture_offset * direction_multiplier
-            if not Piece.are_same_colour(self.game_runner.board_representation[capture_move], piece):
-                add_promotion_or_move(capture_move)
+            dist_west = self.precomputed.num_squares_to_edge[start_square][3]
+            dist_east = self.precomputed.num_squares_to_edge[start_square][2]
+            is_valid_move = (
+                (capture_offset == 7 and dist_west > 0 and direction_multiplier == 1) or
+                (capture_offset == 9 and dist_east > 0 and direction_multiplier == 1) or
+                (capture_offset == 7 and dist_east > 0 and direction_multiplier == -1) or
+                (capture_offset == 9 and dist_west > 0 and direction_multiplier == -1)
+            )
+
+            if is_valid_move:
+                capture_move = start_square + capture_offset * direction_multiplier
+                if not (Piece.are_same_colour(self.game_runner.board_representation[capture_move], piece) or
+                        self.game_runner.board_representation[capture_move] == 0):
+                    add_promotion_or_move(capture_move)
 
         # En passant
         if self.game_runner.en_passant is not None:
@@ -114,14 +125,18 @@ class MoveGenerator:
     def generate_castles(self, turn: str) -> list[Move]:
         moves = []
         # White castles
-        if turn == "w" and self.game_runner.wk_Castle and self.game_runner.board_representation[5] == 0 and self.game_runner.board_representation[6] == 0:
+        if turn == "w" and self.game_runner.wk_castle and self.game_runner.board_representation[5] == 0 \
+                and self.game_runner.board_representation[6] == 0:
             moves.append(Castle(wk_castle=True))
-        if turn == "w" and self.game_runner.wq_Castle and self.game_runner.board_representation[1] == 0 and self.game_runner.board_representation[2] == 0 and self.game_runner.board_representation[3] == 0:
+        if turn == "w" and self.game_runner.wq_castle and self.game_runner.board_representation[1] == 0 \
+                and self.game_runner.board_representation[2] == 0 and self.game_runner.board_representation[3] == 0:
             moves.append(Castle(wq_castle=True))
         # Black castles
-        if turn == "b" and self.game_runner.bk_Castle and self.game_runner.board_representation[61] == 0 and self.game_runner.board_representation[62] == 0:
+        if turn == "b" and self.game_runner.bk_castle and self.game_runner.board_representation[61] == 0 \
+                and self.game_runner.board_representation[62] == 0:
             moves.append(Castle(bk_castle=True))
-        if turn == "b" and self.game_runner.bq_Castle and self.game_runner.board_representation[57] == 0 and self.game_runner.board_representation[58] == 0 and self.game_runner.board_representation[59] == 0:
+        if turn == "b" and self.game_runner.bq_castle and self.game_runner.board_representation[57] == 0 \
+                and self.game_runner.board_representation[58] == 0 and self.game_runner.board_representation[59] == 0:
             moves.append(Castle(bq_castle=True))
 
         return moves
