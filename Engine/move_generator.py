@@ -17,6 +17,8 @@ class MoveGenerator:
         self.precomputed = precomputed
 
     def generate_sliding_moves(self, piece: int, start_square: int) -> list[Move]:
+        if not Piece.is_sliding_piece(piece):
+            raise ValueError("Piece is not a sliding piece")
         # Limit directions for rook and bishop
         start_dir_index = 4 if Piece.is_type(piece, Piece.bishop) else 0
         end_dir_index = 4 if Piece.is_type(piece, Piece.rook) else 8
@@ -38,6 +40,8 @@ class MoveGenerator:
         return moves
 
     def generate_pawn_moves(self, piece: int, start_square: int) -> list[Move]:
+        if not Piece.is_type(piece, Piece.pawn):
+            raise ValueError("Piece is not a pawn")
         moves = []
         direction_multiplier = -1 if not Piece.is_white(piece) else 1
 
@@ -88,6 +92,8 @@ class MoveGenerator:
         return moves
 
     def generate_knight_moves(self, piece: int, start_square: int) -> list[Move]:
+        if not Piece.is_type(piece, Piece.knight):
+            raise ValueError("Piece is not a knight")
         moves = []
         offset_list = []
         # Find place on board
@@ -142,6 +148,9 @@ class MoveGenerator:
         return moves
 
     def generate_king_moves(self, piece: int, start_square: int) -> list[Move]:
+        if not Piece.is_type(piece, Piece.king):
+            raise ValueError("Piece is not a king")
+
         moves = []
 
         for direction_index in range(8):
