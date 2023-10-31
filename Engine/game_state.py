@@ -13,6 +13,8 @@ class GameState:
     bq_castle: bool = None
     half_move_clock: int = None
     full_move_clock: int = None
+    w_king_square: int = None
+    b_king_square: int = None
 
     def check_castling_availability(self) -> None:
 
@@ -50,6 +52,10 @@ class GameState:
                     piece_colour = Piece.white if fen_split[0][i].isupper() else Piece.black
                     piece_type = piece_dict[fen_split[0][i].lower()]
                     self.board_representation[rank*8 + file] = piece_colour + piece_type
+                    if piece_colour == Piece.white and piece_type == Piece.king:
+                        self.w_king_square = rank*8 + file
+                    if piece_colour == Piece.black and piece_type == Piece.king:
+                        self.b_king_square = rank*8 + file
                     file = file + 1
 
         # Determine turn from fen
@@ -166,6 +172,8 @@ class GameState:
         self.bq_castle = None
         self.half_move_clock = None
         self.full_move_clock = None
+        self.w_king_square = None
+        self.b_king_square = None
 
         if fen:
             self.set_board_from_fen_string(fen)

@@ -4,6 +4,7 @@ from Engine.move import Move
 from Engine.castle import Castle
 from Engine.promotion import Promotion
 from Engine.precomputed_move_data import PrecomputedMoveData
+import copy
 
 
 class MoveGenerator:
@@ -186,5 +187,37 @@ class MoveGenerator:
 
         return moves
 
+    def generate_opponent_pseudolegal_moves_from_position(self) -> list[Move]:
+        self.game_runner.switch_turn()
+        moves = self.generate_pseudolegal_moves_from_position()
+        self.game_runner.switch_turn()
+        return moves
+
+    def check_move_internally(self, move: Move) -> None:
+        if type(move) == Castle:
+            pass
+        else:
+            self.game_runner.board_representation[move.end_square] = self.game_runner.board_representation[move.start_square]
+            self.game_runner.board_representation[move.start_square] = 0
+            # Normal move
+            if move.is_enpassant:
+                pass
+                
+    # TODO: Finish implementing this      
     def generate_legal_moves_from_position(self) -> list[Move]:
-        pass
+        pseudo_legal_moves = self.generate_pseudolegal_moves_from_position()
+        save_gamestate = copy.deepcopy(self.game_runner)
+        legal_moves = []
+        for move in pseudo_legal_moves:
+            move_legal = True
+            self.game_runner.play_move_internally(move)
+            opponent_moves = self.generate_opponent_pseudolegal_moves_from_position()
+            for opponent_move in opponent_moves:
+                king_squares = [self.game_runner.white_king_square, self.game_runner.black_king_square]
+                if opponent_move.end_square in king_squares:  # This is sufficient because the opponent cannot capture a friendly piece
+                    move_legal = False
+                    break
+            if move_legal:
+                legal_moves.append(move)
+        self.game_runner = copy.deepcopy(save_gamestate)
+        return legal_moves
