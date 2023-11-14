@@ -16,6 +16,10 @@ class Piece:
         return piece < 7
 
     @staticmethod
+    def is_king(piece: int) -> bool:
+        return piece == Piece.king or piece == Piece.king + Piece.black
+
+    @staticmethod
     def are_same_colour(piece1: int, piece2: int) -> bool:
         return (piece1 < 7) == (piece2 < 7)
 

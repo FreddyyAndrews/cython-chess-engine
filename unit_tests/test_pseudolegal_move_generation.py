@@ -1,10 +1,10 @@
-import sys
-import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '../Engine'))
-
 from game_state import GameState
 from move_generator import MoveGenerator
 from precomputed_move_data import PrecomputedMoveData
+
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '../Engine'))
 import pytest
 
 
